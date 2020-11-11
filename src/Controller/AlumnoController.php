@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Alumno;
+use App\Entity\Asignatura;
 use App\Form\AlumnoType;
 use App\Repository\AlumnoRepository;
+use App\Repository\AsignaturaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * @Route("/alumno")
@@ -93,7 +97,7 @@ class AlumnoController extends AbstractController
     }
     
     /**
-     * @Route("/{id}/notas", name="alumno_notas", methods={"DELETE"})
+     * @Route("/{id}/notas", name="alumno_notas", methods={"GET"})
      */
     public function notas(Request $request, Alumno $alumno) : Response
     {
@@ -107,7 +111,7 @@ class AlumnoController extends AbstractController
     }
     
     /**
-     * @Route("/{id}/asignaturas", name="alumno_asignaturas", methods={"DELETE"})
+     * @Route("/{id}/asignaturas", name="alumno_asignaturas", methods={"GET"})
      */
     public function asignaturas(Request $request, Alumno $alumno) : Response
     {
@@ -119,5 +123,77 @@ class AlumnoController extends AbstractController
             'asignaturas' => $alumno->getAsignaturas(),
             'form' => $form->createView(),
         ]);
+    }
+    
+    /**
+     * @Route("/{id}/asignaturas/add", name="alumno_asignaturas_add", methods={"GET","POST"})
+     */
+    public function addAsignatura(Request $request, Alumno $alumno, AsignaturaRepository $asignaturaRepository)
+    {
+        $form = $this->createFormBuilder()
+            ->add('asignatura', EntityType::class, [
+                 'class' => Asignatura::class,
+                 'choice_label' => 'nombre',
+            ])
+            ->add('Save', SubmitType::class)
+        ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Los datos están en un array con los keys "name", "email", y "message"
+            $ssignaturaId = $form->get('asignatura')->getData()->getId();
+            $asignatura = $asignaturaRepository->find($ssignaturaId);
+            $alumno->addAsignatura($asignatura);
+            
+            $this->getDoctrine()->getManager()->flush();
+            
+            return $this->redirectToRoute('alumno_asignaturas', [
+                'id' => $alumno->getId()
+            ]);
+        }
+
+        return $this->render('alumno/asignaturas_add.html.twig', [
+            'form' => $form->createView(),
+            'alumno' => $alumno
+        ]);
+    }
+    
+    /*public function addAsignatura(AsignaturaRepository $asignaturaRepository, Request $request, Alumno $alumno, Asignatura $asignatura): Response
+    {
+        $form = $this->createForm(AlumnoType::class, $alumno);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $alumno->addAsignatura($asignatura);
+            $entityManager->persist($alumno);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('alumno_asigntaruras');
+        }
+        
+        return $this->render('alumno/asignaturas_add.html.twig', [
+            'alumno' => $alumno,
+            'asignaturas' => $asignaturaRepository->findAll(),
+            'form' => $form->createView(),
+        ]);
+    }*/
+    
+    /**
+     * @Route("/{alumno}/asignatura/{asignatura}/remove", name="alumno_asignaturas_remove", methods={"GET","POST"})
+     */
+    public function removeAsignatura(Alumno $alumno, Asignatura $asignatura)
+    {
+        //dump($alumno);
+        //dump($asignatura);
+        //exit;
+        $alumno->removeAsignatura($asignatura);
+        $this->getDoctrine()->getManager()->flush();
+        
+        return $this->redirectToRoute('alumno_asignaturas', [
+                'id' => $alumno->getId()
+        ]);
+        
     }
 }

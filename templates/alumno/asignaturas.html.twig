@@ -25,7 +25,7 @@
                 <td>{{ asignatura.nombreIngles }}</td>
                 <td>{{ asignatura.credects }}</td>
                 <td>
-                    <a href="{{ path('asignatura_edit', {'id': asignatura.id}) }}">remove</a>
+                    <a href="{{ path('alumno_asignaturas_remove', {'alumno': alumno.id, 'asignatura': asignatura.id}) }}">remove</a>
                 </td>
             </tr>
         {% else %}
@@ -41,10 +41,10 @@
         </tr>
         <tr>
             <td>
-                <a href="{{ path('alumno_add_asignatura', {'id': alumno.id}) }}">Add</a>
+                <a href="{{ path('alumno_asignaturas_add', {'id': alumno.id}) }}">Add Asignatura</a>
             </td>
         </tr>
         </tbody>
     </table>
-
+           
 {% endblock %}
