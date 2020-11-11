@@ -28,9 +28,15 @@ class Grado
      */
     private $alumnos;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Asignatura", mappedBy="gradoId")
+     */
+    private $asignaturas;
+
     public function __construct()
     {
         $this->alumnos = new ArrayCollection();
+        $this->asignaturas = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,5 +85,44 @@ class Grado
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Asignatura[]
+     */
+    public function getAsignaturas(): Collection
+    {
+        return $this->asignaturas;
+    }
+
+    public function addAsignatura(Asignatura $asignatura): self
+    {
+        if (!$this->asignaturas->contains($asignatura)) {
+            $this->asignaturas[] = $asignatura;
+            $asignatura->setGradoId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAsignatura(Asignatura $asignatura): self
+    {
+        if ($this->asignaturas->contains($asignatura)) {
+            $this->asignaturas->removeElement($asignatura);
+            // set the owning side to null (unless already changed)
+            if ($asignatura->getGradoId() === $this) {
+                $asignatura->setGradoId(null);
+            }
+        }
+
+        return $this;
+    }
+    
+    /**
+     * Generates the magic method
+     * 
+     */
+    public function __toString(){
+        return $this->nombre;
     }
 }

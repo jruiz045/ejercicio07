@@ -48,6 +48,11 @@ class Asignatura
      */
     private $notas;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Grado", inversedBy="asignaturas")
+     */
+    private $gradoId;
+
     public function __construct()
     {
         $this->alumnos = new ArrayCollection();
@@ -162,6 +167,26 @@ class Asignatura
                 $nota->setAsignaturaId(null);
             }
         }
+
+        return $this;
+    }
+    
+    /**
+     * Generates the magic method
+     * 
+     */
+    public function __toString(){
+        return $this->nombre;
+    }
+
+    public function getGradoId(): ?Grado
+    {
+        return $this->gradoId;
+    }
+
+    public function setGradoId(?Grado $gradoId): self
+    {
+        $this->gradoId = $gradoId;
 
         return $this;
     }

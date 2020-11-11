@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nota index{% endblock %}
+
+{% block body %}
+    <h1>Nota index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NConvocatoria</th>
+                <th>Fecha</th>
+                <th>Nota</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for notum in notas %}
+            <tr>
+                <td>{{ notum.id }}</td>
+                <td>{{ notum.nConvocatoria }}</td>
+                <td>{{ notum.fecha ? notum.fecha|date('Y-m-d') : '' }}</td>
+                <td>{{ notum.nota }}</td>
+                <td>
+                    <a href="{{ path('nota_show', {'id': notum.id}) }}">show</a>
+                    <a href="{{ path('nota_edit', {'id': notum.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('nota_new') }}">Create new</a>
+{% endblock %}

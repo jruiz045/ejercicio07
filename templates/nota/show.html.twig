@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nota{% endblock %}
+
+{% block body %}
+    <h1>Nota</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ notum.id }}</td>
+            </tr>
+            <tr>
+                <th>NConvocatoria</th>
+                <td>{{ notum.nConvocatoria }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ notum.fecha ? notum.fecha|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Nota</th>
+                <td>{{ notum.nota }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('nota_index') }}">back to list</a>
+
+    <a href="{{ path('nota_edit', {'id': notum.id}) }}">edit</a>
+
+    {{ include('nota/_delete_form.html.twig') }}
+{% endblock %}
