@@ -91,4 +91,33 @@ class AlumnoController extends AbstractController
 
         return $this->redirectToRoute('alumno_index');
     }
+    
+    /**
+     * @Route("/{id}/notas", name="alumno_notas", methods={"DELETE"})
+     */
+    public function notas(Request $request, Alumno $alumno) : Response
+    {
+        $form = $this->createForm(AlumnoType::class, $alumno);
+        $form->handleRequest($request);
+
+        return $this->render('alumno/notas.html.twig', [
+            'notas' => $alumno->getNotas(),
+            'form' => $form->createView(),
+        ]);
+    }
+    
+    /**
+     * @Route("/{id}/asignaturas", name="alumno_asignaturas", methods={"DELETE"})
+     */
+    public function asignaturas(Request $request, Alumno $alumno) : Response
+    {
+        $form = $this->createForm(AlumnoType::class, $alumno);
+        $form->handleRequest($request);
+
+        return $this->render('alumno/asignaturas.html.twig', [
+            'alumno' => $alumno,
+            'asignaturas' => $alumno->getAsignaturas(),
+            'form' => $form->createView(),
+        ]);
+    }
 }

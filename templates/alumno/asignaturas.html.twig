@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alumno Note List{% endblock %}
+
+{% block body %}
+    <h1>Alumno Asignaturas List</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Codigo</th>
+                <th>Nombre</th>
+                <th>NombreIngles</th>
+                <th>Credects</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for asignatura in asignaturas %}
+            <tr>
+                <td>{{ asignatura.id }}</td>
+                <td>{{ asignatura.codigo }}</td>
+                <td>{{ asignatura.nombre }}</td>
+                <td>{{ asignatura.nombreIngles }}</td>
+                <td>{{ asignatura.credects }}</td>
+                <td>
+                    <a href="{{ path('asignatura_edit', {'id': asignatura.id}) }}">remove</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        
+        <tr>
+            <td>
+                <a href="{{ path('alumno_index') }}">back to Alumno list</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="{{ path('alumno_add_asignatura', {'id': alumno.id}) }}">Add</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -33,6 +33,8 @@
                 <td>
                     <a href="{{ path('alumno_show', {'id': alumno.id}) }}">show</a>
                     <a href="{{ path('alumno_edit', {'id': alumno.id}) }}">edit</a>
+                    <a href="{{ path('alumno_notas', {'id': alumno.id}) }}">show notas</a>
+                    <a href="{{ path('alumno_asignaturas', {'id': alumno.id}) }}">show asignaturas</a>
                 </td>
             </tr>
         {% else %}

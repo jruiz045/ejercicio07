@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alumno Note List{% endblock %}
+
+{% block body %}
+    <h1>Alumno Notas List</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NConvocatoria</th>
+                <th>Fecha</th>
+                <th>Nota</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for nota in notas %}
+            <tr>
+                <td>{{ nota.id }}</td>
+                <td>{{ nota.nConvocatoria }}</td>
+                <td>{{ nota.fecha ? nota.fecha|date('Y-m-d') : '' }}</td>
+                <td>{{ nota.nota }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('alumno_index') }}">back to Alumno list</a>
+
+{% endblock %}
