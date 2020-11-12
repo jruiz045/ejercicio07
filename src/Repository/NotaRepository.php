@@ -67,7 +67,7 @@ class NotaRepository extends ServiceEntityRepository
          /*
          $query = $this->getEntityManager()
                  ->createQuery( 
-                         'SELECT nota FROM App:Nota WHE00RE alumnoId = ?1')
+                         'SELECT nota FROM App:Nota WHERE alumnoId = ?1')
                  ->setParameter(1,  $id_alumno);
          try { 
              return $query->getResult(); 
@@ -76,13 +76,11 @@ class NotaRepository extends ServiceEntityRepository
          }*/
          
          $query = $this->getEntityManager()->createQuery(
-                 'SELECT na '
-                 . 'FROM App:Nota na '
-                 . 'LEFT JOIN App:Nota nb '
-                 . 'WITH na.asignaturaId = nb.asignaturaId '
-                 . 'AND na.nConvocatoria < nb.nConvocatoria ' 
-                 . 'WHERE na.alumnoId = ?1 '
-                 . 'ORDER BY na.nConvocatoria DESC');
+                 'SELECT MAX(n.nota) nota, MAX(n.fecha) fecha, MAX(n.nConvocatoria) nConvocatoria, MAX(n.id) id '
+                 . 'FROM App:Nota n '
+                 . 'WHERE n.alumnoId = ?1 '
+                 . 'GROUP BY n.asignaturaId ');
+         
          $query->setParameter(1, $alumno_id);
          $notas = $query->getResult();
          return $notas;
