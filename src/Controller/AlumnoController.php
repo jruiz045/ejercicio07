@@ -7,6 +7,7 @@ use App\Entity\Asignatura;
 use App\Form\AlumnoType;
 use App\Repository\AlumnoRepository;
 use App\Repository\AsignaturaRepository;
+use App\Repository\NotaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -99,13 +100,14 @@ class AlumnoController extends AbstractController
     /**
      * @Route("/{id}/notas", name="alumno_notas", methods={"GET"})
      */
-    public function notas(Request $request, Alumno $alumno) : Response
+    public function notas(Request $request, Alumno $alumno, NotaRepository $notaRepository) : Response
     {
         $form = $this->createForm(AlumnoType::class, $alumno);
         $form->handleRequest($request);
 
         return $this->render('alumno/notas.html.twig', [
-            'notas' => $alumno->getNotas(),
+            //'notas' => $alumno->getNotas(),
+            'notas' => $notaRepository->findNotasByAlumno($alumno->getId()),
             'form' => $form->createView(),
         ]);
     }

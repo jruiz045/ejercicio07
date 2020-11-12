@@ -16,8 +16,13 @@
             </tr>
         </thead>
         <tbody>
+        {% set sumnotas = 0 %}
         {% for nota in notas %}
-            <tr>
+            {% set sumnotas = sumnotas + nota.nota %}
+            {% set backcolor = nota.nota >= 5 ? 'green' : '' %}
+            {% set color = nota.nota >= 5 ? 'white' : '' %}
+            
+            <tr style="color: {{ color }}; background: {{ backcolor }}">
                 <td>{{ nota.id }}</td>
                 <td>{{ nota.nConvocatoria }}</td>
                 <td>{{ nota.fecha ? nota.fecha|date('Y-m-d') : '' }}</td>
@@ -28,6 +33,7 @@
                 <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
+        <tr><td>Notas average : {{  sumnotas / notas|length  }}<td></tr>
         </tbody>
     </table>
 
