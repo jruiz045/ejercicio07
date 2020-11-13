@@ -47,4 +47,23 @@ class AsignaturaRepository extends ServiceEntityRepository
         ;
     }
     */
+    
+    public function findASignaturasByAlumno($alumno_id) {
+        
+        
+        $subQuery = $this->createQueryBuilder('a')
+            ->leftJoin('a.alumnos', 's')
+            ->addSelect('s')
+            ->andWhere('s.id = :val')
+            ->setParameter('val', $alumno_id)    
+            ->getQuery()
+        ;
+        
+        $query = $this->createQueryBuilder('a');
+        $query->select('a')
+            ->where($query->expr()->notIn('a', $subQuery->getDQL()));
+            
+        return  $query->getQuery()->getResult();
+        
+    }
 }

@@ -136,18 +136,16 @@ class AlumnoController extends AbstractController
             ->add('asignatura', EntityType::class, [
                  'class' => Asignatura::class,
                  'choice_label' => 'nombre',
-            ])
+            ])  
             ->add('Save', SubmitType::class)
         ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Los datos están en un array con los keys "name", "email", y "message"
             $ssignaturaId = $form->get('asignatura')->getData()->getId();
             $asignatura = $asignaturaRepository->find($ssignaturaId);
             $alumno->addAsignatura($asignatura);
-            
             $this->getDoctrine()->getManager()->flush();
             
             return $this->redirectToRoute('alumno_asignaturas', [

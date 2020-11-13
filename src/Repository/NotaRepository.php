@@ -49,31 +49,6 @@ class NotaRepository extends ServiceEntityRepository
     */
     
     public function findNotasByAlumno($alumno_id) {
-         /*
-         $query = $this->getEntityManager()
-                 ->createQuery( 
-                         'SELECT a, n, g, asig FROM App:Alumno a '
-                         . 'JOIN a.notas n '
-                         . 'JOIN n.asignatura asig '
-                         . 'WHERE a.id = :id' )
-                 ->setParameter('id',  $id_alumno);
-         
-         try { 
-             return $query->getResult(); 
-         } catch (\Doctrine\ORM\NoResultException $e ) { 
-             return null;  
-         }
-         */
-         /*
-         $query = $this->getEntityManager()
-                 ->createQuery( 
-                         'SELECT nota FROM App:Nota WHERE alumnoId = ?1')
-                 ->setParameter(1,  $id_alumno);
-         try { 
-             return $query->getResult(); 
-         } catch (\Doctrine\ORM\NoResultException $e ) { 
-             return null;  
-         }*/
          
          $query = $this->getEntityManager()->createQuery(
                  'SELECT MAX(n.nota) nota, MAX(n.fecha) fecha, MAX(n.nConvocatoria) nConvocatoria, MAX(n.id) id '
